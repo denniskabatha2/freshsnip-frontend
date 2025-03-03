@@ -10,9 +10,20 @@ import {
   CardFooter
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BarChart, Users, Scissors, ShoppingBag, Clock, Calendar, DollarSign, UserCheck } from 'lucide-react';
+import { 
+  BarChart, 
+  Users, 
+  Scissors, 
+  ShoppingBag, 
+  Calendar, 
+  DollarSign, 
+  UserCheck,
+  LayoutDashboard,
+  Settings as SettingsIcon
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
 
 // Mock chart component - in a real app you'd use recharts or similar
 const SimpleChart = () => (
@@ -23,17 +34,53 @@ const SimpleChart = () => (
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+  const { toast } = useToast();
+
+  const handleExportReport = () => {
+    toast({
+      title: "Report Generated",
+      description: "The performance report has been exported to CSV.",
+    });
+  };
+
+  const handleStaffDetails = () => {
+    toast({
+      title: "Staff Details",
+      description: "Viewing detailed staff performance metrics.",
+    });
+  };
+
+  const handleManageEvents = () => {
+    toast({
+      title: "Event Management",
+      description: "Opening event management dashboard.",
+    });
+  };
+
+  const handleAddBarber = () => {
+    toast({
+      title: "Add New Barber",
+      description: "Opening new barber registration form.",
+    });
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+          <p className="text-muted-foreground">Manage your barbershop operations</p>
+        </div>
         <div className="flex gap-2">
-          <Button variant="outline" asChild>
-            <Link to="/dashboard/reports">Reports</Link>
+          <Button variant="outline" onClick={handleExportReport}>
+            <BarChart className="mr-2 h-4 w-4" />
+            Export Report
           </Button>
           <Button asChild>
-            <Link to="/dashboard/settings">Settings</Link>
+            <Link to="/dashboard/settings">
+              <SettingsIcon className="mr-2 h-4 w-4" />
+              Settings
+            </Link>
           </Button>
         </div>
       </div>
@@ -44,8 +91,13 @@ const AdminDashboard = () => {
             <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$24,563</div>
-            <p className="text-xs text-muted-foreground">+12% from last month</p>
+            <div className="flex items-center">
+              <DollarSign className="h-4 w-4 text-muted-foreground mr-2" />
+              <div className="text-2xl font-bold">$24,563</div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              <span className="text-green-500 font-medium">↑ 12%</span> from last month
+            </p>
           </CardContent>
         </Card>
         
@@ -54,8 +106,13 @@ const AdminDashboard = () => {
             <CardTitle className="text-sm font-medium">Appointments</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">487</div>
-            <p className="text-xs text-muted-foreground">+5% from last month</p>
+            <div className="flex items-center">
+              <Calendar className="h-4 w-4 text-muted-foreground mr-2" />
+              <div className="text-2xl font-bold">487</div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              <span className="text-green-500 font-medium">↑ 5%</span> from last month
+            </p>
           </CardContent>
         </Card>
         
@@ -64,8 +121,13 @@ const AdminDashboard = () => {
             <CardTitle className="text-sm font-medium">New Customers</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">64</div>
-            <p className="text-xs text-muted-foreground">+8% from last month</p>
+            <div className="flex items-center">
+              <Users className="h-4 w-4 text-muted-foreground mr-2" />
+              <div className="text-2xl font-bold">64</div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              <span className="text-green-500 font-medium">↑ 8%</span> from last month
+            </p>
           </CardContent>
         </Card>
         
@@ -74,18 +136,35 @@ const AdminDashboard = () => {
             <CardTitle className="text-sm font-medium">Barber Utilization</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">84%</div>
-            <p className="text-xs text-muted-foreground">-2% from last month</p>
+            <div className="flex items-center">
+              <Scissors className="h-4 w-4 text-muted-foreground mr-2" />
+              <div className="text-2xl font-bold">84%</div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              <span className="text-red-500 font-medium">↓ 2%</span> from last month
+            </p>
           </CardContent>
         </Card>
       </div>
 
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full md:w-auto grid-cols-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="staff">Staff</TabsTrigger>
-          <TabsTrigger value="services">Services</TabsTrigger>
-          <TabsTrigger value="inventory">Inventory</TabsTrigger>
+          <TabsTrigger value="overview">
+            <LayoutDashboard className="h-4 w-4 mr-2" />
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="staff">
+            <Users className="h-4 w-4 mr-2" />
+            Staff
+          </TabsTrigger>
+          <TabsTrigger value="services">
+            <Scissors className="h-4 w-4 mr-2" />
+            Services
+          </TabsTrigger>
+          <TabsTrigger value="inventory">
+            <ShoppingBag className="h-4 w-4 mr-2" />
+            Inventory
+          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="overview">
@@ -98,6 +177,11 @@ const AdminDashboard = () => {
               <CardContent>
                 <SimpleChart />
               </CardContent>
+              <CardFooter>
+                <Button variant="outline" onClick={handleExportReport} className="ml-auto">
+                  Download Report
+                </Button>
+              </CardFooter>
             </Card>
             
             <Card>
@@ -141,7 +225,13 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full">View All Services</Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  asChild
+                >
+                  <Link to="/dashboard/services">View All Services</Link>
+                </Button>
               </CardFooter>
             </Card>
             
@@ -184,7 +274,13 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full">Manage Events</Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={handleManageEvents}
+                >
+                  Manage Events
+                </Button>
               </CardFooter>
             </Card>
           </div>
@@ -220,7 +316,7 @@ const AdminDashboard = () => {
                     <div className="text-center w-20">$5,240</div>
                     <div className="text-center w-16">4.9/5</div>
                     <div className="w-20">
-                      <Button variant="outline" size="sm">Details</Button>
+                      <Button variant="outline" size="sm" onClick={handleStaffDetails}>Details</Button>
                     </div>
                   </div>
                 </div>
@@ -237,7 +333,7 @@ const AdminDashboard = () => {
                     <div className="text-center w-20">$4,120</div>
                     <div className="text-center w-16">4.8/5</div>
                     <div className="w-20">
-                      <Button variant="outline" size="sm">Details</Button>
+                      <Button variant="outline" size="sm" onClick={handleStaffDetails}>Details</Button>
                     </div>
                   </div>
                 </div>
@@ -254,54 +350,62 @@ const AdminDashboard = () => {
                     <div className="text-center w-20">$4,950</div>
                     <div className="text-center w-16">4.7/5</div>
                     <div className="w-20">
-                      <Button variant="outline" size="sm">Details</Button>
+                      <Button variant="outline" size="sm" onClick={handleStaffDetails}>Details</Button>
                     </div>
                   </div>
                 </div>
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full">Add New Barber</Button>
+              <Button className="w-full" onClick={handleAddBarber}>
+                Add New Barber
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>
         
         <TabsContent value="services">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Service Management</CardTitle>
-                <CardDescription>Adjust pricing and availability</CardDescription>
-              </div>
-              <Button>Add Service</Button>
+            <CardHeader>
+              <CardTitle>Service Management</CardTitle>
+              <CardDescription>Manage your barbershop's service offerings</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div className="flex items-center justify-between border-b pb-2">
                   <div className="font-medium">Service</div>
                   <div className="flex gap-8">
-                    <div className="text-center w-20">Price</div>
                     <div className="text-center w-20">Duration</div>
-                    <div className="text-center w-16">Status</div>
+                    <div className="text-center w-20">Price</div>
+                    <div className="text-center w-20">Bookings</div>
                     <div className="w-20"></div>
                   </div>
                 </div>
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Scissors className="h-4 w-4" />
+                    <Scissors className="h-4 w-4" />
+                    <span>Regular Haircut</span>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="text-center w-20">30 min</div>
+                    <div className="text-center w-20">$30</div>
+                    <div className="text-center w-20">186</div>
+                    <div className="w-20">
+                      <Button variant="outline" size="sm">Edit</Button>
                     </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Scissors className="h-4 w-4" />
                     <span>Premium Haircut</span>
                   </div>
                   <div className="flex gap-8">
-                    <div className="text-center w-20">$30.00</div>
                     <div className="text-center w-20">45 min</div>
-                    <div className="text-center w-16">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Active
-                      </span>
-                    </div>
+                    <div className="text-center w-20">$45</div>
+                    <div className="text-center w-20">124</div>
                     <div className="w-20">
                       <Button variant="outline" size="sm">Edit</Button>
                     </div>
@@ -310,19 +414,13 @@ const AdminDashboard = () => {
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Scissors className="h-4 w-4" />
-                    </div>
+                    <Scissors className="h-4 w-4" />
                     <span>Beard Trim</span>
                   </div>
                   <div className="flex gap-8">
-                    <div className="text-center w-20">$15.00</div>
                     <div className="text-center w-20">20 min</div>
-                    <div className="text-center w-16">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Active
-                      </span>
-                    </div>
+                    <div className="text-center w-20">$25</div>
+                    <div className="text-center w-20">143</div>
                     <div className="w-20">
                       <Button variant="outline" size="sm">Edit</Button>
                     </div>
@@ -331,116 +429,105 @@ const AdminDashboard = () => {
                 
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Scissors className="h-4 w-4" />
-                    </div>
-                    <span>Hair Coloring</span>
+                    <Scissors className="h-4 w-4" />
+                    <span>Haircut & Beard</span>
                   </div>
                   <div className="flex gap-8">
-                    <div className="text-center w-20">$60.00</div>
-                    <div className="text-center w-20">90 min</div>
-                    <div className="text-center w-16">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        Limited
-                      </span>
-                    </div>
+                    <div className="text-center w-20">50 min</div>
+                    <div className="text-center w-20">$50</div>
+                    <div className="text-center w-20">98</div>
                     <div className="w-20">
                       <Button variant="outline" size="sm">Edit</Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="inventory">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Inventory Management</CardTitle>
-                <CardDescription>Product stock and orders</CardDescription>
-              </div>
-              <Button>New Order</Button>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between border-b pb-2">
-                  <div className="font-medium">Product</div>
-                  <div className="flex gap-8">
-                    <div className="text-center w-20">Stock</div>
-                    <div className="text-center w-20">Price</div>
-                    <div className="text-center w-16">Status</div>
-                    <div className="w-20"></div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <ShoppingBag className="h-4 w-4" />
-                    </div>
-                    <span>Premium Hair Wax</span>
-                  </div>
-                  <div className="flex gap-8">
-                    <div className="text-center w-20">24 units</div>
-                    <div className="text-center w-20">$12.99</div>
-                    <div className="text-center w-16">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        In Stock
-                      </span>
-                    </div>
-                    <div className="w-20">
-                      <Button variant="outline" size="sm">Order</Button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <ShoppingBag className="h-4 w-4" />
-                    </div>
-                    <span>Beard Oil</span>
-                  </div>
-                  <div className="flex gap-8">
-                    <div className="text-center w-20">8 units</div>
-                    <div className="text-center w-20">$18.99</div>
-                    <div className="text-center w-16">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        Low
-                      </span>
-                    </div>
-                    <div className="w-20">
-                      <Button variant="outline" size="sm">Order</Button>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <ShoppingBag className="h-4 w-4" />
-                    </div>
-                    <span>Hair Spray</span>
-                  </div>
-                  <div className="flex gap-8">
-                    <div className="text-center w-20">0 units</div>
-                    <div className="text-center w-20">$14.99</div>
-                    <div className="text-center w-16">
-                      <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                        Out
-                      </span>
-                    </div>
-                    <div className="w-20">
-                      <Button variant="outline" size="sm">Order</Button>
                     </div>
                   </div>
                 </div>
               </div>
             </CardContent>
             <CardFooter>
-              <Button variant="outline" className="w-full">View All Products</Button>
+              <Button className="w-full">Add New Service</Button>
+            </CardFooter>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="inventory">
+          <Card>
+            <CardHeader>
+              <CardTitle>Inventory Management</CardTitle>
+              <CardDescription>Track and manage your product inventory</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between border-b pb-2">
+                  <div className="font-medium">Product</div>
+                  <div className="flex gap-8">
+                    <div className="text-center w-20">In Stock</div>
+                    <div className="text-center w-20">Price</div>
+                    <div className="text-center w-20">Sold</div>
+                    <div className="w-20"></div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="h-4 w-4" />
+                    <span>Styling Gel</span>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="text-center w-20">42</div>
+                    <div className="text-center w-20">$15</div>
+                    <div className="text-center w-20">78</div>
+                    <div className="w-20">
+                      <Button variant="outline" size="sm">Restock</Button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="h-4 w-4" />
+                    <span>Beard Oil</span>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="text-center w-20">28</div>
+                    <div className="text-center w-20">$22</div>
+                    <div className="text-center w-20">64</div>
+                    <div className="w-20">
+                      <Button variant="outline" size="sm">Restock</Button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="h-4 w-4" />
+                    <span>Pomade</span>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="text-center w-20">15</div>
+                    <div className="text-center w-20">$18</div>
+                    <div className="text-center w-20">56</div>
+                    <div className="w-20">
+                      <Button variant="outline" size="sm">Restock</Button>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <ShoppingBag className="h-4 w-4" />
+                    <span>Hair Wax</span>
+                  </div>
+                  <div className="flex gap-8">
+                    <div className="text-center w-20">8</div>
+                    <div className="text-center w-20">$20</div>
+                    <div className="text-center w-20">48</div>
+                    <div className="w-20 text-red-500 font-medium">Low Stock</div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full">Manage Inventory</Button>
             </CardFooter>
           </Card>
         </TabsContent>

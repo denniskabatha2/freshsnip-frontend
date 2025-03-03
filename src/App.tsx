@@ -34,6 +34,7 @@ import Clients from "./pages/dashboard/Clients";
 import BarberServices from "./pages/dashboard/BarberServices";
 import Earnings from "./pages/dashboard/Earnings";
 import Reviews from "./pages/dashboard/Reviews";
+import AdminDashboard from "./pages/dashboard/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +78,7 @@ const App = () => (
                 <Route path="services" element={<BarberServices />} />
                 <Route path="earnings" element={<Earnings />} />
                 <Route path="reviews" element={<Reviews />} />
+                <Route path="admin" element={<AdminDashboard />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
