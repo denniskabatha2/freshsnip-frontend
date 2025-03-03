@@ -29,6 +29,11 @@ import Rewards from "./pages/dashboard/Rewards";
 import Messages from "./pages/dashboard/Messages";
 import Settings from "./pages/dashboard/Settings";
 import Payment from "./pages/dashboard/Payment";
+import Schedule from "./pages/dashboard/Schedule";
+import Clients from "./pages/dashboard/Clients";
+import BarberServices from "./pages/dashboard/BarberServices";
+import Earnings from "./pages/dashboard/Earnings";
+import Reviews from "./pages/dashboard/Reviews";
 
 const queryClient = new QueryClient();
 
@@ -67,6 +72,11 @@ const App = () => (
                 <Route path="messages" element={<Messages />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="payment" element={<Payment />} />
+                <Route path="schedule" element={<Schedule />} />
+                <Route path="clients" element={<Clients />} />
+                <Route path="services" element={<BarberServices />} />
+                <Route path="earnings" element={<Earnings />} />
+                <Route path="reviews" element={<Reviews />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
