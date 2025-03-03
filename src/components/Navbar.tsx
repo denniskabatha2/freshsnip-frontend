@@ -49,10 +49,10 @@ const Navbar = () => {
     <>
       <header
         className={cn(
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12',
+          'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-4 sm:px-6 md:px-12',
           isScrolled 
-            ? 'py-3 bg-background/90 backdrop-blur-md shadow-sm border-b border-border/50' 
-            : 'py-6 bg-transparent'
+            ? 'py-2 sm:py-3 bg-background/90 backdrop-blur-md shadow-sm border-b border-border/50' 
+            : 'py-3 sm:py-6 bg-transparent'
         )}
       >
         <div className="container mx-auto">
@@ -68,14 +68,14 @@ const Navbar = () => {
 
             <Link 
               to="/" 
-              className="relative z-10 text-2xl font-bold tracking-tighter text-foreground mx-4"
+              className="relative z-10 text-xl sm:text-2xl font-bold tracking-tighter text-foreground mx-2 sm:mx-4"
             >
               <span className="font-serif">clean</span>
               <span className="font-sans font-light">cuts</span>
             </Link>
 
             {/* Desktop Navigation with more spacing */}
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
               {primaryNavLinks.map((link) => (
                 <Link
                   key={link.path}
