@@ -35,6 +35,11 @@ import BarberServices from "./pages/dashboard/BarberServices";
 import Earnings from "./pages/dashboard/Earnings";
 import Reviews from "./pages/dashboard/Reviews";
 import AdminDashboard from "./pages/dashboard/AdminDashboard";
+import Staff from "./pages/dashboard/Staff";
+import Customers from "./pages/dashboard/Customers";
+import Analytics from "./pages/dashboard/Analytics";
+import Shop from "./pages/dashboard/Shop";
+import Inventory from "./pages/dashboard/Inventory";
 
 const queryClient = new QueryClient();
 
@@ -73,12 +78,21 @@ const App = () => (
                 <Route path="messages" element={<Messages />} />
                 <Route path="settings" element={<Settings />} />
                 <Route path="payment" element={<Payment />} />
+                
+                {/* Barber routes */}
                 <Route path="schedule" element={<Schedule />} />
                 <Route path="clients" element={<Clients />} />
                 <Route path="services" element={<BarberServices />} />
                 <Route path="earnings" element={<Earnings />} />
                 <Route path="reviews" element={<Reviews />} />
+                
+                {/* Admin routes */}
                 <Route path="admin" element={<AdminDashboard />} />
+                <Route path="staff" element={<Staff />} />
+                <Route path="customers" element={<Customers />} />
+                <Route path="analytics" element={<Analytics />} />
+                <Route path="shop" element={<Shop />} />
+                <Route path="inventory" element={<Inventory />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
