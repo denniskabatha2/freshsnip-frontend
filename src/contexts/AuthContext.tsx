@@ -13,6 +13,14 @@ export interface User {
   avatar?: string;
 }
 
+// Define registration data type
+export interface RegistrationData {
+  name: string;
+  email: string;
+  password: string;
+  role: UserRole;
+}
+
 // Mock users for demonstration
 const MOCK_USERS = [
   {
@@ -43,6 +51,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  register: (data: RegistrationData) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -58,6 +67,7 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [users, setUsers] = useState<User[]>(MOCK_USERS);
 
   // Check for saved user on mount
   useEffect(() => {
@@ -66,12 +76,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(JSON.parse(savedUser));
       setIsAuthenticated(true);
     }
+    
+    // Also retrieve any registered users from localStorage
+    const savedUsers = localStorage.getItem('users');
+    if (savedUsers) {
+      const parsedUsers = JSON.parse(savedUsers);
+      setUsers([...MOCK_USERS, ...parsedUsers]);
+    }
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     // Mock authentication - in a real app, this would call an API
     // For demo purposes, accept any password and find user by email
-    const foundUser = MOCK_USERS.find(u => u.email.toLowerCase() === email.toLowerCase());
+    const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
     
     if (foundUser) {
       setUser(foundUser);
@@ -83,6 +100,34 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return false;
   };
 
+  const register = async (data: RegistrationData): Promise<boolean> => {
+    // Check if the email already exists
+    const emailExists = users.some(u => u.email.toLowerCase() === data.email.toLowerCase());
+    if (emailExists) {
+      return false;
+    }
+    
+    // Create a new user
+    const newUser: User = {
+      id: (users.length + 1).toString(),
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.name}`,
+    };
+    
+    // Update the users array
+    const updatedUsers = [...users, newUser];
+    setUsers(updatedUsers);
+    
+    // Save the updated users to localStorage
+    // In a real app, this would be handled by a backend API
+    const registeredUsers = updatedUsers.filter(u => !MOCK_USERS.some(mu => mu.id === u.id));
+    localStorage.setItem('users', JSON.stringify(registeredUsers));
+    
+    return true;
+  };
+
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
@@ -90,7 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, register }}>
       {children}
     </AuthContext.Provider>
   );

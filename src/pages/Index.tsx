@@ -31,8 +31,8 @@ const Index = () => {
         <Hero
           title="Premium Barber Experience for the Modern Gentleman"
           description="Exceptional haircuts, beard grooming, and hot towel shaves delivered with precision and care."
-          ctaText="Book Appointment"
-          ctaLink="/booking"
+          ctaText="Register Now"
+          ctaLink="/register"
           image="https://images.unsplash.com/photo-1621605815971-fbc98d665033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80"
           fullHeight
           overlay

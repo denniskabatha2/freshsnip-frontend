@@ -31,11 +31,10 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const { isAuthenticated, user, logout } = useAuth();
   
-  // Full navigation links for the sidebar
+  // Full navigation links for the sidebar (removed booking from primary links)
   const navLinks = [
     { name: 'Home', path: '/', icon: Home, primary: true },
     { name: 'Services', path: '/services', icon: Scissors, primary: true },
-    { name: 'Booking', path: '/booking', icon: Calendar, primary: true },
     { name: 'About', path: '/about', icon: Info, primary: false },
     { name: 'Gallery', path: '/gallery', icon: Image, primary: false },
     { name: 'Products', path: '/products', icon: ShoppingBag, primary: false },
@@ -166,28 +165,52 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
             </h3>
             <ul className="space-y-1">
               {!isAuthenticated ? (
-                <li>
-                  <Link
-                    to="/login"
-                    onClick={onClose}
-                    className={cn(
-                      'flex items-center p-2 sm:p-3 rounded-md transition-colors hover:bg-accent group',
-                      isActive('/login') 
-                        ? 'text-primary font-medium bg-primary/10' 
-                        : 'text-foreground hover:text-primary'
-                    )}
-                  >
-                    <User size={18} className="mr-3 flex-shrink-0" />
-                    <span className="truncate">Login</span>
-                    <ChevronRight 
-                      size={16} 
+                <>
+                  <li>
+                    <Link
+                      to="/register"
+                      onClick={onClose}
                       className={cn(
-                        'ml-auto transition-transform flex-shrink-0',
-                        isActive('/login') ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
-                      )} 
-                    />
-                  </Link>
-                </li>
+                        'flex items-center p-2 sm:p-3 rounded-md transition-colors hover:bg-accent group',
+                        isActive('/register') 
+                          ? 'text-primary font-medium bg-primary/10' 
+                          : 'text-foreground hover:text-primary'
+                      )}
+                    >
+                      <User size={18} className="mr-3 flex-shrink-0" />
+                      <span className="truncate">Register</span>
+                      <ChevronRight 
+                        size={16} 
+                        className={cn(
+                          'ml-auto transition-transform flex-shrink-0',
+                          isActive('/register') ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
+                        )} 
+                      />
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/login"
+                      onClick={onClose}
+                      className={cn(
+                        'flex items-center p-2 sm:p-3 rounded-md transition-colors hover:bg-accent group',
+                        isActive('/login') 
+                          ? 'text-primary font-medium bg-primary/10' 
+                          : 'text-foreground hover:text-primary'
+                      )}
+                    >
+                      <User size={18} className="mr-3 flex-shrink-0" />
+                      <span className="truncate">Login</span>
+                      <ChevronRight 
+                        size={16} 
+                        className={cn(
+                          'ml-auto transition-transform flex-shrink-0',
+                          isActive('/login') ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
+                        )} 
+                      />
+                    </Link>
+                  </li>
+                </>
               ) : (
                 <li>
                   <button

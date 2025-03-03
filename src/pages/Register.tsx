@@ -1,58 +1,68 @@
 
 import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth, UserRole, RegistrationData } from '../contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
-import { User, Shield, Key } from 'lucide-react';
+import { User, Shield } from 'lucide-react';
 
-interface LocationState {
-  from?: {
-    pathname: string;
-  };
-}
-
-const Login = () => {
-  const { login } = useAuth();
+const Register = () => {
+  const { register } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState<UserRole>('customer');
   const [isLoading, setIsLoading] = useState(false);
 
-  const locationState = location.state as LocationState;
-  const from = locationState?.from?.pathname || '/';
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
+    if (password !== confirmPassword) {
+      toast({
+        title: 'Password Error',
+        description: 'Passwords do not match.',
+        variant: 'destructive',
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      const success = await login(email, password);
+      const registrationData: RegistrationData = {
+        name,
+        email,
+        password,
+        role,
+      };
+
+      const success = await register(registrationData);
       
       if (success) {
         toast({
-          title: 'Login Successful',
-          description: 'Welcome back!',
+          title: 'Registration Successful',
+          description: 'Your account has been created. Please log in.',
           variant: 'default',
         });
-        navigate(from, { replace: true });
+        navigate('/login');
       } else {
         toast({
-          title: 'Login Failed',
-          description: 'Invalid email or password.',
+          title: 'Registration Failed',
+          description: 'Email already exists or there was an error.',
           variant: 'destructive',
         });
       }
     } catch (error) {
       toast({
-        title: 'Login Error',
-        description: 'An error occurred during login.',
+        title: 'Registration Error',
+        description: 'An error occurred during registration.',
         variant: 'destructive',
       });
     } finally {
@@ -66,33 +76,40 @@ const Login = () => {
       <div className="container flex items-center justify-center min-h-screen py-20">
         <Card className="w-full max-w-md">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Welcome Back</CardTitle>
-            <CardDescription>Sign in to your account</CardDescription>
+            <CardTitle className="text-2xl">Create an Account</CardTitle>
+            <CardDescription>Join CleanCuts and book your appointments</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="regular">
-              <TabsList className="grid w-full grid-cols-3 mb-6">
-                <TabsTrigger value="regular">
+            <Tabs defaultValue="customer">
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="customer" onClick={() => setRole('customer')}>
                   <User className="mr-2 h-4 w-4" />
                   Customer
                 </TabsTrigger>
-                <TabsTrigger value="barber">
+                <TabsTrigger value="barber" onClick={() => setRole('barber')}>
                   <Shield className="mr-2 h-4 w-4" />
                   Barber
                 </TabsTrigger>
-                <TabsTrigger value="admin">
-                  <Key className="mr-2 h-4 w-4" />
-                  Admin
-                </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="regular">
-                <form onSubmit={handleLogin}>
+              <TabsContent value="customer">
+                <form onSubmit={handleRegister}>
                   <div className="grid gap-4">
                     <div className="grid gap-2">
                       <Input
+                        id="name"
+                        placeholder="Full Name"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        disabled={isLoading}
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Input
                         id="email"
-                        placeholder="customer@example.com"
+                        placeholder="Email Address"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -108,25 +125,46 @@ const Login = () => {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
+                        disabled={isLoading}
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Input
+                        id="confirmPassword"
+                        placeholder="Confirm Password"
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         disabled={isLoading}
                         required
                       />
                     </div>
                     <Button type="submit" disabled={isLoading}>
-                      {isLoading ? 'Signing In...' : 'Sign In'}
+                      {isLoading ? 'Creating Account...' : 'Create Account'}
                     </Button>
                   </div>
                 </form>
               </TabsContent>
               
               <TabsContent value="barber">
-                <form onSubmit={handleLogin}>
+                <form onSubmit={handleRegister}>
                   <div className="grid gap-4">
                     <div className="grid gap-2">
                       <Input
+                        id="name"
+                        placeholder="Full Name"
+                        type="text"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        disabled={isLoading}
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Input
                         id="email"
-                        placeholder="barber@example.com"
+                        placeholder="Email Address"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -142,47 +180,23 @@ const Login = () => {
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
-                        disabled={isLoading}
-                        required
-                      />
-                    </div>
-                    <Button type="submit" disabled={isLoading}>
-                      {isLoading ? 'Signing In...' : 'Staff Sign In'}
-                    </Button>
-                  </div>
-                </form>
-              </TabsContent>
-              
-              <TabsContent value="admin">
-                <form onSubmit={handleLogin}>
-                  <div className="grid gap-4">
-                    <div className="grid gap-2">
-                      <Input
-                        id="email"
-                        placeholder="admin@example.com"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        autoComplete="email"
                         disabled={isLoading}
                         required
                       />
                     </div>
                     <div className="grid gap-2">
                       <Input
-                        id="password"
-                        placeholder="Password"
+                        id="confirmPassword"
+                        placeholder="Confirm Password"
                         type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        autoComplete="current-password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                         disabled={isLoading}
                         required
                       />
                     </div>
                     <Button type="submit" disabled={isLoading}>
-                      {isLoading ? 'Signing In...' : 'Admin Sign In'}
+                      {isLoading ? 'Creating Account...' : 'Create Staff Account'}
                     </Button>
                   </div>
                 </form>
@@ -192,16 +206,10 @@ const Login = () => {
           <CardFooter className="flex flex-col items-center justify-center gap-4">
             <div className="text-center text-sm text-muted-foreground">
               <div>
-                Don't have an account?{' '}
-                <Link to="/register" className="text-primary hover:underline">
-                  Register now
+                Already have an account?{' '}
+                <Link to="/login" className="text-primary hover:underline">
+                  Sign in
                 </Link>
-              </div>
-              <div className="mt-1">
-                For demo purposes, use these emails with any password:
-              </div>
-              <div className="mt-1">
-                customer@example.com | barber@example.com | admin@example.com
               </div>
             </div>
           </CardFooter>
@@ -211,4 +219,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

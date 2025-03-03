@@ -11,14 +11,14 @@ const CtaSection = () => {
         <div className="max-w-3xl mx-auto text-center animate-on-scroll">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for a Fresh Look?</h2>
           <p className="text-muted-foreground mb-8 text-lg">
-            Book your appointment today and experience the Cleancuts difference. 
+            Join CleanCuts today and experience the difference.
             Our expert barbers are ready to help you achieve your desired style.
           </p>
           <Link 
-            to="/booking"
+            to="/register"
             className="inline-flex items-center px-8 py-3 bg-primary text-primary-foreground font-medium rounded-full hover:bg-primary/90 transition-colors duration-300 shadow-soft"
           >
-            Book Your Appointment
+            Register Now
             <ArrowRight size={16} className="ml-2" />
           </Link>
         </div>

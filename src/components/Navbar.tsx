@@ -36,11 +36,10 @@ const Navbar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  // Primary links that will stay in the navbar
+  // Primary links that will stay in the navbar (removed booking)
   const primaryNavLinks = [
     { name: 'Home', path: '/' },
     { name: 'Services', path: '/services' },
-    { name: 'Booking', path: '/booking' },
     { name: 'Contact', path: '/contact' },
   ];
 
@@ -100,12 +99,19 @@ const Navbar = () => {
                   </Link>
                 </Button>
               ) : (
-                <Button asChild variant="default" size="sm">
-                  <Link to="/login">
-                    <User className="mr-2 h-4 w-4" />
-                    Login
-                  </Link>
-                </Button>
+                <div className="flex space-x-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/register">
+                      Register
+                    </Link>
+                  </Button>
+                  <Button asChild variant="default" size="sm">
+                    <Link to="/login">
+                      <User className="mr-2 h-4 w-4" />
+                      Login
+                    </Link>
+                  </Button>
+                </div>
               )}
               
               <ThemeToggle />
@@ -121,12 +127,20 @@ const Navbar = () => {
                   </Link>
                 </Button>
               ) : (
-                <Button asChild variant="default" size="sm">
-                  <Link to="/login">
-                    <User className="h-4 w-4" />
-                    <span className="sr-only">Login</span>
-                  </Link>
-                </Button>
+                <div className="flex space-x-2">
+                  <Button asChild variant="outline" size="sm">
+                    <Link to="/register">
+                      <span className="sr-only">Register</span>
+                      R
+                    </Link>
+                  </Button>
+                  <Button asChild variant="default" size="sm">
+                    <Link to="/login">
+                      <User className="h-4 w-4" />
+                      <span className="sr-only">Login</span>
+                    </Link>
+                  </Button>
+                </div>
               )}
               <ThemeToggle />
             </div>

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,6 +18,7 @@ import Products from "./pages/Products";
 import Membership from "./pages/Membership";
 import LookBook from "./pages/LookBook";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -37,12 +39,12 @@ const App = () => (
               <Route path="/services" element={<Services />} />
               <Route path="/services/:serviceId" element={<ServiceDetails />} />
               <Route path="/gallery" element={<Gallery />} />
-              <Route path="/booking" element={<Booking />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/products" element={<Products />} />
               <Route path="/membership" element={<Membership />} />
               <Route path="/lookbook" element={<LookBook />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
               
               <Route path="/dashboard" element={
                 <ProtectedRoute>
@@ -50,6 +52,8 @@ const App = () => (
                 </ProtectedRoute>
               }>
                 <Route index element={<Dashboard />} />
+                {/* Add booking as a protected route */}
+                <Route path="booking" element={<Booking />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
