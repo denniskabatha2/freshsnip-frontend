@@ -12,7 +12,8 @@ const CtaSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready for a Fresh Look?</h2>
           <p className="text-muted-foreground mb-8 text-lg">
             Join CleanCuts today and experience the difference.
-            Our expert barbers are ready to help you achieve your desired style.
+            With over 11 premium services to choose from, our expert barbers 
+            are ready to help you achieve your desired style.
           </p>
           <Link 
             to="/register"
