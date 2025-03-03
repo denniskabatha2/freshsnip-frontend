@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
-import { Navbar } from '@/components/Navbar';
+import Navbar from '@/components/Navbar';
 import { User, Shield, Key } from 'lucide-react';
 
 interface LocationState {
