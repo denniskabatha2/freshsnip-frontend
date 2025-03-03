@@ -32,6 +32,9 @@ const Navbar = () => {
     { name: 'About', path: '/about' },
     { name: 'Services', path: '/services' },
     { name: 'Gallery', path: '/gallery' },
+    { name: 'Products', path: '/products' },
+    { name: 'Look Book', path: '/lookbook' },
+    { name: 'Membership', path: '/membership' },
     { name: 'Booking', path: '/booking' },
     { name: 'Contact', path: '/contact' },
   ];
@@ -60,7 +63,7 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
@@ -95,7 +98,7 @@ const Navbar = () => {
               isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
             )}
           >
-            <nav className="flex flex-col items-center space-y-8 py-8">
+            <nav className="flex flex-col items-center space-y-6 py-8">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
