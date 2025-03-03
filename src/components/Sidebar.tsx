@@ -27,16 +27,17 @@ type SidebarProps = {
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   
+  // Full navigation links for the sidebar
   const navLinks = [
     { name: 'Home', path: '/', icon: Home },
+    { name: 'Services', path: '/services', icon: Scissors, primary: true },
+    { name: 'Booking', path: '/booking', icon: Calendar, primary: true },
     { name: 'About', path: '/about', icon: Info },
-    { name: 'Services', path: '/services', icon: Scissors },
     { name: 'Gallery', path: '/gallery', icon: Image },
     { name: 'Products', path: '/products', icon: ShoppingBag },
     { name: 'Look Book', path: '/lookbook', icon: Book },
     { name: 'Membership', path: '/membership', icon: Crown },
-    { name: 'Booking', path: '/booking', icon: Calendar },
-    { name: 'Contact', path: '/contact', icon: Phone },
+    { name: 'Contact', path: '/contact', icon: Phone, primary: true },
   ];
 
   const isActive = (path: string) => {
@@ -65,32 +66,71 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
         <Separator className="mb-4" />
         
         <nav className="flex-1 overflow-y-auto p-4">
-          <ul className="space-y-2">
-            {navLinks.map((link) => (
-              <li key={link.path}>
-                <Link
-                  to={link.path}
-                  onClick={onClose}
-                  className={cn(
-                    'flex items-center p-3 rounded-md transition-colors hover:bg-accent group',
-                    isActive(link.path) 
-                      ? 'text-primary font-medium bg-primary/10' 
-                      : 'text-foreground hover:text-primary'
-                  )}
-                >
-                  <link.icon size={18} className="mr-3" />
-                  <span>{link.name}</span>
-                  <ChevronRight 
-                    size={16} 
+          {/* Primary navigation section */}
+          <div className="mb-6">
+            <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              Main Navigation
+            </h3>
+            <ul className="space-y-1">
+              {navLinks.filter(link => link.primary).map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    onClick={onClose}
                     className={cn(
-                      'ml-auto transition-transform',
-                      isActive(link.path) ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
-                    )} 
-                  />
-                </Link>
-              </li>
-            ))}
-          </ul>
+                      'flex items-center p-3 rounded-md transition-colors hover:bg-accent group',
+                      isActive(link.path) 
+                        ? 'text-primary font-medium bg-primary/10' 
+                        : 'text-foreground hover:text-primary'
+                    )}
+                  >
+                    <link.icon size={18} className="mr-3" />
+                    <span>{link.name}</span>
+                    <ChevronRight 
+                      size={16} 
+                      className={cn(
+                        'ml-auto transition-transform',
+                        isActive(link.path) ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
+                      )} 
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Secondary navigation section */}
+          <div>
+            <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              More
+            </h3>
+            <ul className="space-y-1">
+              {navLinks.filter(link => !link.primary).map((link) => (
+                <li key={link.path}>
+                  <Link
+                    to={link.path}
+                    onClick={onClose}
+                    className={cn(
+                      'flex items-center p-3 rounded-md transition-colors hover:bg-accent group',
+                      isActive(link.path) 
+                        ? 'text-primary font-medium bg-primary/10' 
+                        : 'text-foreground hover:text-primary'
+                    )}
+                  >
+                    <link.icon size={18} className="mr-3" />
+                    <span>{link.name}</span>
+                    <ChevronRight 
+                      size={16} 
+                      className={cn(
+                        'ml-auto transition-transform',
+                        isActive(link.path) ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
+                      )} 
+                    />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </nav>
         
         <div className="p-4 border-t border-border">
