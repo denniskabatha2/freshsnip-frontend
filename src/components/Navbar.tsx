@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -44,7 +45,7 @@ const Navbar = () => {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out px-6 md:px-12',
         isScrolled 
-          ? 'py-3 bg-white/90 backdrop-blur-md shadow-sm' 
+          ? 'py-3 bg-background/90 backdrop-blur-md shadow-sm border-b border-border/50' 
           : 'py-6 bg-transparent'
       )}
     >
@@ -52,7 +53,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           <Link 
             to="/" 
-            className="relative z-10 text-2xl font-bold tracking-tighter"
+            className="relative z-10 text-2xl font-bold tracking-tighter text-foreground"
           >
             <span className="font-serif">clean</span>
             <span className="font-sans font-light">cuts</span>
@@ -72,21 +73,25 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+            <ThemeToggle />
           </nav>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden relative z-10 p-2 -mr-2 text-primary"
-            aria-label={isMobileMenuOpen ? 'Close Menu' : 'Open Menu'}
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          <div className="md:hidden flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="relative z-10 p-2 -mr-2 text-primary"
+              aria-label={isMobileMenuOpen ? 'Close Menu' : 'Open Menu'}
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
 
           {/* Mobile Navigation */}
           <div
             className={cn(
-              'fixed inset-0 z-0 flex flex-col items-center justify-center bg-white transition-transform duration-300 ease-in-out md:hidden',
+              'fixed inset-0 z-0 flex flex-col items-center justify-center bg-background transition-transform duration-300 ease-in-out md:hidden',
               isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
             )}
           >
