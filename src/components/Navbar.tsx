@@ -1,16 +1,19 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import ThemeToggle from './ThemeToggle';
 import Sidebar from './Sidebar';
 import SidebarOverlay from './SidebarOverlay';
+import { useAuth } from '../contexts/AuthContext';
+import { Button } from './ui/button';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
+  const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,11 +91,43 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+              
+              {isAuthenticated ? (
+                <Button asChild variant="default" size="sm">
+                  <Link to="/dashboard">
+                    <User className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild variant="default" size="sm">
+                  <Link to="/login">
+                    <User className="mr-2 h-4 w-4" />
+                    Login
+                  </Link>
+                </Button>
+              )}
+              
               <ThemeToggle />
             </nav>
 
-            {/* Mobile View - Just show theme toggle */}
-            <div className="md:hidden flex items-center">
+            {/* Mobile View - Just show theme toggle and login/dashboard button */}
+            <div className="md:hidden flex items-center space-x-2">
+              {isAuthenticated ? (
+                <Button asChild variant="default" size="sm">
+                  <Link to="/dashboard">
+                    <User className="h-4 w-4" />
+                    <span className="sr-only">Dashboard</span>
+                  </Link>
+                </Button>
+              ) : (
+                <Button asChild variant="default" size="sm">
+                  <Link to="/login">
+                    <User className="h-4 w-4" />
+                    <span className="sr-only">Login</span>
+                  </Link>
+                </Button>
+              )}
               <ThemeToggle />
             </div>
           </div>

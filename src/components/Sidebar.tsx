@@ -13,11 +13,14 @@ import {
   Calendar, 
   Phone,
   ChevronRight,
-  X
+  X,
+  User,
+  LayoutDashboard
 } from 'lucide-react';
 import { Separator } from './ui/separator';
 import { Button } from './ui/button';
 import ThemeToggle from './ThemeToggle';
+import { useAuth } from '@/contexts/AuthContext';
 
 type SidebarProps = {
   isOpen: boolean;
@@ -26,6 +29,7 @@ type SidebarProps = {
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
+  const { isAuthenticated, user, logout } = useAuth();
   
   // Full navigation links for the sidebar
   const navLinks = [
@@ -63,7 +67,30 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
           </Button>
         </div>
         
-        <Separator className="mb-4" />
+        {/* User Account Section */}
+        {isAuthenticated && user && (
+          <div className="px-4 py-2">
+            <div className="bg-secondary/50 rounded-lg px-3 py-2">
+              <p className="text-sm font-medium">{user.name}</p>
+              <p className="text-xs text-muted-foreground capitalize">{user.role} Account</p>
+              <div className="mt-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="w-full text-xs"
+                  asChild
+                >
+                  <Link to="/dashboard" onClick={onClose}>
+                    <LayoutDashboard className="h-3 w-3 mr-1" />
+                    Dashboard
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        <Separator className="mb-4 mt-2" />
         
         <nav className="flex-1 overflow-y-auto px-3 py-2">
           {/* Primary navigation section */}
@@ -129,6 +156,52 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+          
+          {/* Authentication Section */}
+          <div className="mt-6">
+            <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              Account
+            </h3>
+            <ul className="space-y-1">
+              {!isAuthenticated ? (
+                <li>
+                  <Link
+                    to="/login"
+                    onClick={onClose}
+                    className={cn(
+                      'flex items-center p-2 sm:p-3 rounded-md transition-colors hover:bg-accent group',
+                      isActive('/login') 
+                        ? 'text-primary font-medium bg-primary/10' 
+                        : 'text-foreground hover:text-primary'
+                    )}
+                  >
+                    <User size={18} className="mr-3 flex-shrink-0" />
+                    <span className="truncate">Login</span>
+                    <ChevronRight 
+                      size={16} 
+                      className={cn(
+                        'ml-auto transition-transform flex-shrink-0',
+                        isActive('/login') ? 'opacity-100' : 'opacity-0 group-hover:opacity-70'
+                      )} 
+                    />
+                  </Link>
+                </li>
+              ) : (
+                <li>
+                  <button
+                    onClick={() => {
+                      logout();
+                      onClose();
+                    }}
+                    className="w-full flex items-center p-2 sm:p-3 rounded-md transition-colors hover:bg-accent group text-foreground hover:text-primary"
+                  >
+                    <User size={18} className="mr-3 flex-shrink-0" />
+                    <span className="truncate">Logout</span>
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
         </nav>
