@@ -148,7 +148,7 @@ const DashboardSidebar = () => {
   );
 
   return (
-    <aside className="w-64 flex-shrink-0 h-[calc(100vh-4rem)] border-r bg-background hidden md:block overflow-y-auto">
+    <aside className="w-full md:w-64 flex-shrink-0 h-[calc(100vh-4rem)] bg-background overflow-y-auto">
       <div className="py-4">
         <div className="px-4 py-2">
           <div className="bg-secondary/50 rounded-lg px-3 py-2">

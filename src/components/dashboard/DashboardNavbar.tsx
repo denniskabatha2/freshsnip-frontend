@@ -2,91 +2,87 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
 import { 
   Bell, 
-  Settings, 
-  LogOut,
-  User
+  MessageSquare, 
+  User,
+  Menu
 } from 'lucide-react';
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuLabel, 
-  DropdownMenuSeparator, 
-  DropdownMenuTrigger 
-} from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/ThemeToggle';
 
-const DashboardNavbar = () => {
+interface DashboardNavbarProps {
+  toggleSidebar?: () => void;
+}
+
+const DashboardNavbar = ({ toggleSidebar }: DashboardNavbarProps) => {
   const { user, logout } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-  };
-
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-2">
-          <Link to="/" className="text-xl sm:text-2xl font-bold text-foreground">
+    <header className="h-16 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-30 sticky top-0">
+      <div className="container h-full flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          {/* Sidebar toggle for mobile */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="md:hidden" 
+            onClick={toggleSidebar}
+          >
+            <Menu size={20} />
+            <span className="sr-only">Toggle sidebar</span>
+          </Button>
+          
+          <Link to="/" className="text-xl font-bold tracking-tighter">
             <span className="font-serif">clean</span>
             <span className="font-sans font-light">cuts</span>
           </Link>
-          <div className="hidden md:flex items-center gap-2 ml-4">
-            <Link to="/dashboard" className="text-primary font-medium">
-              Dashboard
-            </Link>
-          </div>
         </div>
-        
-        <div className="flex items-center gap-3">
+
+        <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" className="relative">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-primary"></span>
+            <Bell size={20} />
+            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary"></span>
+            <span className="sr-only">Notifications</span>
+          </Button>
+          
+          <Button variant="ghost" size="icon" className="relative">
+            <MessageSquare size={20} />
+            <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-primary"></span>
+            <span className="sr-only">Messages</span>
           </Button>
           
           <ThemeToggle />
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                {user?.avatar ? (
-                  <img 
-                    src={user.avatar} 
-                    alt={user.name} 
-                    className="h-10 w-10 rounded-full" 
-                  />
-                ) : (
-                  <User className="h-6 w-6" />
-                )}
+              <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 border">
+                <User size={16} />
+                <span className="sr-only">User menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end">
               <DropdownMenuLabel>
-                <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user?.name}</p>
-                  <p className="text-xs leading-none text-muted-foreground">{user?.email}</p>
+                <div className="flex flex-col">
+                  <span>{user?.name}</span>
+                  <span className="text-xs text-muted-foreground">{user?.email}</span>
                 </div>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/dashboard/profile">
-                  <User className="mr-2 h-4 w-4" />
-                  <span>Profile</span>
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link to="/dashboard/settings">
-                  <Settings className="mr-2 h-4 w-4" />
-                  <span>Settings</span>
-                </Link>
+                <Link to="/dashboard/settings">Settings</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+              <DropdownMenuItem onClick={logout} className="text-destructive">
+                Logout
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
