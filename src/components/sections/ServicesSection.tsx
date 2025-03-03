@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Scissors, Beard, Spray } from 'lucide-react';
+import { ArrowRight, Scissors, Paintbrush, Droplet } from 'lucide-react';
 import ServiceCard, { ServiceProps } from '@/components/ServiceCard';
 
 interface ServicesSectionProps {
