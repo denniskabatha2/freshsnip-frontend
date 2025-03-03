@@ -3,9 +3,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Scissors, Paintbrush, Droplet } from 'lucide-react';
 import ServiceCard, { ServiceProps } from '@/components/ServiceCard';
+import { Card, CardContent } from "@/components/ui/card";
 
 interface ServicesSectionProps {
   showHeading?: boolean;
+}
+
+interface ServiceCategory {
+  name: string;
+  icon: React.ReactNode;
+  description: string;
 }
 
 const ServicesSection = ({ showHeading = true }: ServicesSectionProps) => {
@@ -91,6 +98,24 @@ const ServicesSection = ({ showHeading = true }: ServicesSectionProps) => {
     },
   ];
 
+  const categories: ServiceCategory[] = [
+    {
+      name: "Haircuts",
+      icon: <Scissors className="h-10 w-10 text-primary" />,
+      description: "Professional cuts for all hair types and styles"
+    },
+    {
+      name: "Beard Care",
+      icon: <Paintbrush className="h-10 w-10 text-primary" />,
+      description: "Expert beard shaping, trimming, and maintenance"
+    },
+    {
+      name: "Grooming Products",
+      icon: <Droplet className="h-10 w-10 text-primary" />,
+      description: "Premium styling and care products for home use"
+    }
+  ];
+
   // On the services page, show all services. On the homepage, show only first 3
   const displayServices = showHeading ? services.slice(0, 3) : services;
 
@@ -104,6 +129,22 @@ const ServicesSection = ({ showHeading = true }: ServicesSectionProps) => {
             <p className="text-muted-foreground">
               From classic cuts to signature beard grooming, our expert barbers provide exceptional services tailored to your style preferences.
             </p>
+          </div>
+        )}
+        
+        {showHeading && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {categories.map((category, index) => (
+              <Card key={index} className="animate-on-scroll hover:shadow-md transition-all duration-300" style={{ animationDelay: `${index * 100}ms` }}>
+                <CardContent className="pt-6 text-center">
+                  <div className="mx-auto mb-4">
+                    {category.icon}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{category.name}</h3>
+                  <p className="text-muted-foreground">{category.description}</p>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         )}
         

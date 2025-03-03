@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Clock, Check, X, Info } from 'lucide-react';
+import { Clock, Check, X, Info, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -14,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 
 export interface ServiceProps {
+  id?: string;
   title: string;
   description: string;
   price: string;
@@ -28,6 +30,7 @@ export interface ServiceProps {
 }
 
 const ServiceCard: React.FC<ServiceProps> = ({
+  id = "",
   title,
   description,
   price,
@@ -40,6 +43,9 @@ const ServiceCard: React.FC<ServiceProps> = ({
   notIncluded = [],
   longDescription,
 }) => {
+  // Generate an ID from the title if none is provided
+  const serviceId = id || title.toLowerCase().replace(/\s+/g, '-');
+
   return (
     <div 
       className={cn(
@@ -142,8 +148,13 @@ const ServiceCard: React.FC<ServiceProps> = ({
                   </div>
                 </div>
                 
-                <div className="mt-6">
+                <div className="mt-6 flex gap-2">
                   <Button className="w-full">Book This Service</Button>
+                  <Link to={`/services/${serviceId}`}>
+                    <Button variant="outline">
+                      View Details <ArrowRight size={14} className="ml-1" />
+                    </Button>
+                  </Link>
                 </div>
               </DialogContent>
             </Dialog>

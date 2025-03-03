@@ -10,6 +10,8 @@ import ServicesSection from '@/components/sections/ServicesSection';
 import FeaturesSection from '@/components/sections/FeaturesSection';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import CtaSection from '@/components/sections/CtaSection';
+import StaffSection from '@/components/sections/StaffSection';
+import PricingSection from '@/components/sections/PricingSection';
 
 const Index = () => {
   useAnimateOnScroll();
@@ -31,6 +33,8 @@ const Index = () => {
         <AboutSection />
         <ServicesSection />
         <FeaturesSection />
+        <StaffSection />
+        <PricingSection />
         <TestimonialsSection />
         <CtaSection />
       </main>
