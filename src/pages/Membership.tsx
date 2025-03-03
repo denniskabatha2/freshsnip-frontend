@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Clock, Scissors, Sparkles, CalendarCheck } from 'lucide-react';
@@ -65,11 +64,10 @@ const membershipPlans = [
   }
 ];
 
-// FAQ content
 const faqs = [
   {
     question: 'How do I sign up for a membership plan?',
-    answer: 'You can sign up for any of our membership plans by visiting our location and speaking with our staff, calling us, or using our online form. We'll guide you through the process and answer any questions you might have.'
+    answer: "You can sign up for any of our membership plans by visiting our location and speaking with our staff, calling us, or using our online form. We'll guide you through the process and answer any questions you might have."
   },
   {
     question: 'Can I transfer my services to someone else?',
@@ -89,7 +87,7 @@ const faqs = [
   },
   {
     question: 'Are there any sign-up fees?',
-    answer: 'There are no sign-up fees for any of our membership plans. You'll only pay the monthly fee for the plan you choose, with no hidden costs or commitments.'
+    answer: "There are no sign-up fees for any of our membership plans. You'll only pay the monthly fee for the plan you choose, with no hidden costs or commitments."
   }
 ];
 
