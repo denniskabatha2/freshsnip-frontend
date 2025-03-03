@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check } from 'lucide-react';
+import { Check, Crown, Star } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface PricingOption {
@@ -13,12 +13,13 @@ interface PricingOption {
   popular?: boolean;
   buttonText: string;
   buttonLink: string;
+  icon?: React.ReactNode;
 }
 
 const PricingSection = () => {
   const pricingOptions: PricingOption[] = [
     {
-      title: "Basic Package",
+      title: "Classic Package",
       price: "$35",
       description: "Essential grooming services for the busy professional",
       features: [
@@ -27,8 +28,9 @@ const PricingSection = () => {
         "Complimentary beverage",
         "Schedule flexibility"
       ],
-      buttonText: "Book Basic",
-      buttonLink: "/booking?package=basic"
+      buttonText: "Book Classic",
+      buttonLink: "/booking?package=basic",
+      icon: <Check size={24} className="text-primary" />
     },
     {
       title: "Premium Package",
@@ -44,10 +46,11 @@ const PricingSection = () => {
       ],
       popular: true,
       buttonText: "Book Premium",
-      buttonLink: "/booking?package=premium"
+      buttonLink: "/booking?package=premium",
+      icon: <Star size={24} className="text-amber-500" />
     },
     {
-      title: "VIP Experience",
+      title: "Royal Experience",
       price: "$85",
       description: "Complete luxury treatment for the distinguished gentleman",
       features: [
@@ -60,13 +63,14 @@ const PricingSection = () => {
         "Private styling area",
         "Extended appointment time"
       ],
-      buttonText: "Book VIP",
-      buttonLink: "/booking?package=vip"
+      buttonText: "Book Royal",
+      buttonLink: "/booking?package=vip",
+      icon: <Crown size={24} className="text-amber-600" />
     }
   ];
 
   return (
-    <section className="bg-background section-padding">
+    <section className="bg-gradient-to-b from-background to-secondary/50 section-padding">
       <div className="container mx-auto px-6 md:px-12">
         <div className="text-center max-w-xl mx-auto mb-16 animate-on-scroll">
           <span className="inline-block px-3 py-1 mb-6 text-xs font-medium tracking-wider uppercase bg-secondary rounded-full">Pricing</span>
@@ -80,7 +84,7 @@ const PricingSection = () => {
           {pricingOptions.map((option, index) => (
             <Card 
               key={index} 
-              className={`animate-on-scroll relative overflow-hidden ${option.popular ? 'ring-2 ring-primary shadow-highlight' : 'shadow-card'}`}
+              className={`animate-on-scroll relative overflow-hidden ${option.popular ? 'ring-2 ring-primary shadow-highlight' : 'shadow-card'} hover:shadow-highlight hover:translate-y-[-8px] transition-all duration-300`}
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {option.popular && (
@@ -89,6 +93,11 @@ const PricingSection = () => {
                 </div>
               )}
               <CardContent className="pt-8 pb-8">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="bg-secondary p-3 rounded-full">
+                    {option.icon}
+                  </div>
+                </div>
                 <h3 className="text-xl font-semibold mb-2 text-center">{option.title}</h3>
                 <p className="text-4xl font-bold text-center mb-2">{option.price}</p>
                 <p className="text-center text-muted-foreground mb-6">{option.description}</p>

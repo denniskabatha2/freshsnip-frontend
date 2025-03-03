@@ -51,6 +51,10 @@
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   }
   
+  .text-shadow-lg {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
   .text-gradient {
     @apply bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent;
   }
@@ -73,6 +77,19 @@
   .animate-on-scroll.animated {
     opacity: 1;
     transform: translateY(0);
+  }
+  
+  /* Premium styling */
+  .shadow-premium {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+  
+  .btn-premium {
+    @apply bg-gradient-to-r from-primary to-primary/90 text-white px-8 py-3 rounded-full hover:shadow-premium transition-all duration-300;
+  }
+  
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
   }
 }
 
@@ -104,4 +121,25 @@
   margin: 0;
   padding: 0;
   text-align: left;
+}
+
+/* Premium animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shine {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background-size: 200% 100%;
+  animation: shine 2s linear infinite;
 }

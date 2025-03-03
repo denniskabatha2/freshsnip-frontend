@@ -5,7 +5,7 @@ import { ArrowRight } from 'lucide-react';
 
 const AboutSection = () => {
   return (
-    <section className="section-padding">
+    <section className="section-padding bg-gradient-to-b from-background to-secondary/30">
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <div className="animate-on-scroll">
@@ -27,14 +27,14 @@ const AboutSection = () => {
           </div>
           
           <div className="relative animate-on-scroll">
-            <div className="aspect-square rounded-2xl overflow-hidden">
+            <div className="aspect-square rounded-2xl overflow-hidden shadow-highlight">
               <img 
-                src="https://images.unsplash.com/photo-1622286342621-4bd786c2447c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80" 
-                alt="Barber shop interior" 
-                className="h-full w-full object-cover"
+                src="https://images.unsplash.com/photo-1517832606299-7ae9b720a186?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1999&q=80" 
+                alt="Premium barber shop" 
+                className="h-full w-full object-cover hover:scale-105 transition-transform duration-700"
               />
             </div>
-            <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl p-6 shadow-card">
+            <div className="absolute -bottom-6 -left-6 bg-card rounded-2xl p-6 shadow-card border border-border/50 backdrop-blur-sm">
               <div className="flex items-center space-x-6">
                 <div className="flex flex-col items-center">
                   <span className="text-3xl font-bold">8+</span>
