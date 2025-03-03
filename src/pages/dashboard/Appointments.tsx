@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import { 
   Card, 
   CardContent, 
@@ -11,11 +10,9 @@ import {
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Clock, CreditCard, Scissors } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 
-const CustomerDashboard = () => {
-  const { user } = useAuth();
+const Appointments = () => {
   const { toast } = useToast();
 
   const handleReschedule = () => {
@@ -35,64 +32,8 @@ const CustomerDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Customer Dashboard</h1>
-        <Button asChild>
-          <Link to="/dashboard/booking">Book Appointment</Link>
-        </Button>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Upcoming Appointments</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">2</div>
-          </CardContent>
-          <CardFooter>
-            <Link to="/dashboard/appointments" className="text-xs text-blue-500 hover:underline">View all</Link>
-          </CardFooter>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Loyalty Points</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">250</div>
-          </CardContent>
-          <CardFooter>
-            <Link to="/dashboard/rewards" className="text-xs text-blue-500 hover:underline">Redeem</Link>
-          </CardFooter>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Saved Styles</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">5</div>
-          </CardContent>
-          <CardFooter>
-            <Link to="/dashboard/favorites" className="text-xs text-blue-500 hover:underline">View all</Link>
-          </CardFooter>
-        </Card>
-        
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium">Last Visit</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">2 weeks ago</div>
-          </CardContent>
-          <CardFooter>
-            <Link to="/dashboard/history" className="text-xs text-blue-500 hover:underline">View history</Link>
-          </CardFooter>
-        </Card>
-      </div>
-
-      <h2 className="text-xl font-semibold mt-6">Upcoming Appointments</h2>
+      <h1 className="text-3xl font-bold">My Appointments</h1>
+      <p className="text-muted-foreground">Manage your upcoming barber appointments</p>
       
       <div className="space-y-4">
         <Card>
@@ -157,4 +98,4 @@ const CustomerDashboard = () => {
   );
 };
 
-export default CustomerDashboard;
+export default Appointments;

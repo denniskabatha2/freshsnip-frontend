@@ -22,6 +22,13 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./components/dashboard/DashboardLayout";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Appointments from "./pages/dashboard/Appointments";
+import History from "./pages/dashboard/History";
+import Favorites from "./pages/dashboard/Favorites";
+import Rewards from "./pages/dashboard/Rewards";
+import Messages from "./pages/dashboard/Messages";
+import Settings from "./pages/dashboard/Settings";
+import Payment from "./pages/dashboard/Payment";
 
 const queryClient = new QueryClient();
 
@@ -52,8 +59,14 @@ const App = () => (
                 </ProtectedRoute>
               }>
                 <Route index element={<Dashboard />} />
-                {/* Add booking as a protected route */}
                 <Route path="booking" element={<Booking />} />
+                <Route path="appointments" element={<Appointments />} />
+                <Route path="history" element={<History />} />
+                <Route path="favorites" element={<Favorites />} />
+                <Route path="rewards" element={<Rewards />} />
+                <Route path="messages" element={<Messages />} />
+                <Route path="settings" element={<Settings />} />
+                <Route path="payment" element={<Payment />} />
               </Route>
               
               <Route path="*" element={<NotFound />} />
