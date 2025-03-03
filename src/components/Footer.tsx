@@ -41,7 +41,6 @@ const Footer = () => {
               <li><Link to="/about" className="text-muted-foreground hover:text-primary transition-colors">About</Link></li>
               <li><Link to="/services" className="text-muted-foreground hover:text-primary transition-colors">Services</Link></li>
               <li><Link to="/gallery" className="text-muted-foreground hover:text-primary transition-colors">Gallery</Link></li>
-              <li><Link to="/booking" className="text-muted-foreground hover:text-primary transition-colors">Booking</Link></li>
               <li><Link to="/contact" className="text-muted-foreground hover:text-primary transition-colors">Contact</Link></li>
             </ul>
           </div>
@@ -67,11 +66,11 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-base font-semibold">Contact</h3>
             <address className="not-italic text-muted-foreground space-y-3">
-              <p>123 Styling Street</p>
-              <p>San Francisco, CA 94103</p>
+              <p>Roysambu, Nairobi</p>
+              <p>Kenya</p>
               <p className="pt-2">
-                <a href="tel:+14155550123" className="hover:text-primary transition-colors">
-                  (415) 555-0123
+                <a href="tel:+254706870553" className="hover:text-primary transition-colors">
+                  +254 706 870 553
                 </a>
               </p>
               <p>

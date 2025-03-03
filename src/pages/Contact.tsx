@@ -47,7 +47,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-lg font-medium mb-1">Visit Us</h3>
-                    <p className="text-muted-foreground">123 Styling Street<br />San Francisco, CA 94103</p>
+                    <p className="text-muted-foreground">Roysambu<br />Nairobi, Kenya</p>
                   </div>
                 </div>
                 
@@ -58,7 +58,7 @@ const Contact = () => {
                   <div>
                     <h3 className="text-lg font-medium mb-1">Call Us</h3>
                     <p className="text-muted-foreground">
-                      <a href="tel:+14155550123" className="hover:text-primary transition-colors">(415) 555-0123</a>
+                      <a href="tel:+254706870553" className="hover:text-primary transition-colors">+254 706 870 553</a>
                     </p>
                   </div>
                 </div>
@@ -92,7 +92,7 @@ const Contact = () => {
               
               <div className="mt-12">
                 <iframe 
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100939.98555098464!2d-122.50764015555555!3d37.75781499999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1655828013214!5m2!1sen!2sus" 
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15955.32857839863!2d36.877502!3d-1.206006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f3f78bae0624f%3A0x112c6b0c55c80c61!2sRoysambu%2C%20Nairobi!5e0!3m2!1sen!2ske!4v1712238543974!5m2!1sen!2ske" 
                   width="100%" 
                   height="300" 
                   style={{ border: 0, borderRadius: '0.5rem' }} 

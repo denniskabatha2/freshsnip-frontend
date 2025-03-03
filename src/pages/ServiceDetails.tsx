@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
@@ -97,6 +96,145 @@ const ServiceDetails = () => {
       notIncluded: [
         'Color services',
         'Chemical treatments'
+      ]
+    },
+    'luxury-fade': {
+      title: 'Luxury Fade Cut',
+      description: 'Premium fade haircut with precise blending and detailing.',
+      longDescription: 'Our luxury fade cut offers immaculate precision with seamless gradient transitions. This service includes a detailed consultation to determine the perfect fade style for you, followed by expert cutting, shaping, and finishing.',
+      price: '$45',
+      duration: '40 min',
+      image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+      benefits: [
+        'Consultation for fade type & style',
+        'Precision clipper work',
+        'Line-up and edge detailing',
+        'Hot towel treatment',
+        'Styling with premium products'
+      ],
+      notIncluded: [
+        'Beard styling',
+        'Color services'
+      ]
+    },
+    'hair-treatment': {
+      title: 'Hair & Scalp Treatment',
+      description: 'Revitalizing treatment to nourish hair and scalp.',
+      longDescription: 'Our specialized hair and scalp treatment helps restore balance, hydration, and vitality to your hair and scalp. This therapeutic service begins with a thorough analysis of your scalp condition, followed by a customized treatment protocol.',
+      price: '$50',
+      duration: '45 min',
+      image: 'https://images.unsplash.com/photo-1560869713-7d0a29430803?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2342&q=80',
+      benefits: [
+        'Scalp analysis and consultation',
+        'Deep cleansing treatment',
+        'Specialized mask application',
+        'Stimulating scalp massage',
+        'Hydrating serum application',
+        'Soothing steam treatment'
+      ],
+      notIncluded: [
+        'Haircut services',
+        'Color services'
+      ]
+    },
+    'grey-blending': {
+      title: 'Grey Blending',
+      description: 'Subtle color service to reduce the appearance of grey hair.',
+      longDescription: 'Our grey blending service offers a natural-looking solution for reducing the appearance of grey hair without a full color commitment. This service creates a subtle, blended effect that looks natural and sophisticated.',
+      price: '$65',
+      duration: '60 min',
+      image: 'https://images.unsplash.com/photo-1605497788044-5a32c7078486?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2487&q=80',
+      benefits: [
+        'Color consultation',
+        'Customized color formulation',
+        'Natural-looking application technique',
+        'Processing with timing precision',
+        'Shampoo and conditioning',
+        'Styling with premium products'
+      ],
+      notIncluded: [
+        'Full color service',
+        'Highlights or lowlights'
+      ]
+    },
+    'father-son': {
+      title: 'Father & Son Package',
+      description: 'Special package for father and son to enjoy together.',
+      longDescription: 'Our Father & Son package is the perfect opportunity for quality time while looking your best. This service includes haircuts for both father and son, with personalized styling consultations and premium products.',
+      price: '$70',
+      duration: '60 min',
+      image: 'https://images.unsplash.com/photo-1582132062487-40"0a23eff8a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+      benefits: [
+        'Individual consultations',
+        'Classic haircuts for both',
+        'Shampoo and conditioning',
+        'Hot towel treatment for dad',
+        'Styling with age-appropriate products',
+        'Complimentary beverage'
+      ],
+      notIncluded: [
+        'Beard services',
+        'Color services'
+      ]
+    },
+    'bridal-party': {
+      title: 'Bridal Party Grooming',
+      description: 'Specialized grooming services for the wedding party.',
+      longDescription: 'Our Bridal Party Grooming package ensures everyone looks their best for the big day. We offer specialized services for the groom and groomsmen, with attention to detail and premium products to ensure a polished look for the wedding day.',
+      price: '$40/person',
+      duration: '30-45 min per person',
+      image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2669&q=80',
+      benefits: [
+        'Pre-wedding consultation',
+        'Customized haircut and styling',
+        'Beard grooming if needed',
+        'Hot towel treatment',
+        'Premium styling products',
+        'Champagne or beverage service'
+      ],
+      notIncluded: [
+        'Color services',
+        'Full shave services'
+      ]
+    },
+    'express-grooming': {
+      title: 'Express Grooming',
+      description: 'Quick service for those on a tight schedule.',
+      longDescription: 'Our Express Grooming service is designed for busy professionals who need a quick touch-up. This efficient service focuses on the essentials to keep you looking sharp when time is limited.',
+      price: '$25',
+      duration: '20 min',
+      image: 'https://images.unsplash.com/photo-1621607149489-443b8458adf2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2514&q=80',
+      benefits: [
+        'Quick consultation',
+        'Focused cutting and trimming',
+        'Edge clean-up',
+        'Essential styling',
+        'Fast service guarantee'
+      ],
+      notIncluded: [
+        'Shampoo and conditioning',
+        'Relaxation treatments',
+        'Beard services'
+      ]
+    },
+    'signature-face-shave': {
+      title: 'Signature Face Shave',
+      description: 'Precision face shaving with our signature technique.',
+      longDescription: 'Our Signature Face Shave offers meticulous attention to detail for the perfect close shave. This service focuses on preparation, precision, and post-shave care for an exceptionally smooth result and refreshed skin.',
+      price: '$35',
+      duration: '35 min',
+      image: 'https://images.unsplash.com/photo-1621607150284-e71a59d7260d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2340&q=80',
+      benefits: [
+        'Hot towel preparation',
+        'Pre-shave oil application',
+        'Premium shaving cream',
+        'Two-pass shave technique',
+        'Cold towel finish',
+        'Aftershave and moisturizer'
+      ],
+      notIncluded: [
+        'Haircut services',
+        'Beard trimming'
       ]
     }
   };
