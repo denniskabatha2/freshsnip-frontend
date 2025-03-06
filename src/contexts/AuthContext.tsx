@@ -63,10 +63,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (profile && !profileError) {
           const userData: User = {
             id: profile.id,
-            name: profile.name,
+            name: `${profile.first_name} ${profile.last_name}`,
             email: session.user.email!,
             role: profile.role as UserRole,
-            avatar: profile.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}`,
+            avatar: profile.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.first_name} ${profile.last_name}`,
           };
           setUser(userData);
           setIsAuthenticated(true);
@@ -101,10 +101,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (profile && !profileError) {
             const userData: User = {
               id: profile.id,
-              name: profile.name,
+              name: `${profile.first_name} ${profile.last_name}`,
               email: session.user.email!,
               role: profile.role as UserRole,
-              avatar: profile.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}`,
+              avatar: profile.avatar_url || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.first_name} ${profile.last_name}`,
             };
             setUser(userData);
             setIsAuthenticated(true);
