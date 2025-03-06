@@ -9,6 +9,150 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      appointments: {
+        Row: {
+          barber_id: string
+          created_at: string | null
+          customer_id: string | null
+          end_time: string
+          id: string
+          notes: string | null
+          service_id: string
+          start_time: string
+          status: string
+          updated_at: string | null
+        }
+        Insert: {
+          barber_id: string
+          created_at?: string | null
+          customer_id?: string | null
+          end_time: string
+          id?: string
+          notes?: string | null
+          service_id: string
+          start_time: string
+          status?: string
+          updated_at?: string | null
+        }
+        Update: {
+          barber_id?: string
+          created_at?: string | null
+          customer_id?: string | null
+          end_time?: string
+          id?: string
+          notes?: string | null
+          service_id?: string
+          start_time?: string
+          status?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "appointments_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "appointments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      barber_services: {
+        Row: {
+          barber_id: string | null
+          created_at: string | null
+          id: string
+          price_override: number | null
+          service_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          barber_id?: string | null
+          created_at?: string | null
+          id?: string
+          price_override?: number | null
+          service_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          barber_id?: string | null
+          created_at?: string | null
+          id?: string
+          price_override?: number | null
+          service_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "barber_services_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "barbers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "barber_services_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      barbers: {
+        Row: {
+          bio: string | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          specialties: string[] | null
+          updated_at: string | null
+          user_id: string | null
+          years_experience: number | null
+        }
+        Insert: {
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          years_experience?: number | null
+        }
+        Update: {
+          bio?: string | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          specialties?: string[] | null
+          updated_at?: string | null
+          user_id?: string | null
+          years_experience?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "barbers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           booking_date: string
@@ -63,42 +207,6 @@ export type Database = {
           },
         ]
       }
-      bus_operators: {
-        Row: {
-          address: string
-          contact: string
-          created_at: string | null
-          email: string
-          id: string
-          logo_url: string | null
-          name: string
-          rating: number | null
-          updated_at: string | null
-        }
-        Insert: {
-          address: string
-          contact: string
-          created_at?: string | null
-          email: string
-          id?: string
-          logo_url?: string | null
-          name: string
-          rating?: number | null
-          updated_at?: string | null
-        }
-        Update: {
-          address?: string
-          contact?: string
-          created_at?: string | null
-          email?: string
-          id?: string
-          logo_url?: string | null
-          name?: string
-          rating?: number | null
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
       buses: {
         Row: {
           amenities: string[] | null
@@ -133,12 +241,45 @@ export type Database = {
           type?: string
           updated_at?: string | null
         }
+        Relationships: []
+      }
+      gallery: {
+        Row: {
+          barber_id: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string
+          is_active: boolean | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          barber_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url: string
+          is_active?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          barber_id?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string
+          is_active?: boolean | null
+          title?: string | null
+          updated_at?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "buses_operator_id_fkey"
-            columns: ["operator_id"]
+            foreignKeyName: "gallery_barber_id_fkey"
+            columns: ["barber_id"]
             isOneToOne: false
-            referencedRelation: "bus_operators"
+            referencedRelation: "barbers"
             referencedColumns: ["id"]
           },
         ]
@@ -248,6 +389,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      products: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          price: number
+          stock: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          price: number
+          stock?: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          price?: number
+          stock?: number
+          updated_at?: string | null
+        }
+        Relationships: []
       }
       profiles: {
         Row: {
@@ -408,12 +585,216 @@ export type Database = {
           },
         ]
       }
+      services: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          duration: number
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          price: number
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          duration: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          price: number
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          duration?: number
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          price?: number
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      shop: {
+        Row: {
+          address: string
+          city: string
+          created_at: string | null
+          email: string | null
+          id: string
+          logo_url: string | null
+          name: string
+          phone: string
+          state: string
+          updated_at: string | null
+          zip: string
+        }
+        Insert: {
+          address: string
+          city: string
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name: string
+          phone: string
+          state: string
+          updated_at?: string | null
+          zip: string
+        }
+        Update: {
+          address?: string
+          city?: string
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          logo_url?: string | null
+          name?: string
+          phone?: string
+          state?: string
+          updated_at?: string | null
+          zip?: string
+        }
+        Relationships: []
+      }
+      shop_hours: {
+        Row: {
+          close_time: string | null
+          created_at: string | null
+          day_of_week: number
+          id: string
+          is_closed: boolean | null
+          open_time: string | null
+          shop_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          close_time?: string | null
+          created_at?: string | null
+          day_of_week: number
+          id?: string
+          is_closed?: boolean | null
+          open_time?: string | null
+          shop_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          close_time?: string | null
+          created_at?: string | null
+          day_of_week?: number
+          id?: string
+          is_closed?: boolean | null
+          open_time?: string | null
+          shop_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_hours_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shop"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      shop_special_hours: {
+        Row: {
+          close_time: string | null
+          created_at: string | null
+          date: string
+          description: string | null
+          id: string
+          is_closed: boolean | null
+          open_time: string | null
+          shop_id: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          close_time?: string | null
+          created_at?: string | null
+          date: string
+          description?: string | null
+          id?: string
+          is_closed?: boolean | null
+          open_time?: string | null
+          shop_id?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          close_time?: string | null
+          created_at?: string | null
+          date?: string
+          description?: string | null
+          id?: string
+          is_closed?: boolean | null
+          open_time?: string | null
+          shop_id?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "shop_special_hours_shop_id_fkey"
+            columns: ["shop_id"]
+            isOneToOne: false
+            referencedRelation: "shop"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      time_off: {
+        Row: {
+          barber_id: string | null
+          created_at: string | null
+          end_date: string
+          id: string
+          reason: string | null
+          start_date: string
+          updated_at: string | null
+        }
+        Insert: {
+          barber_id?: string | null
+          created_at?: string | null
+          end_date: string
+          id?: string
+          reason?: string | null
+          start_date: string
+          updated_at?: string | null
+        }
+        Update: {
+          barber_id?: string | null
+          created_at?: string | null
+          end_date?: string
+          id?: string
+          reason?: string | null
+          start_date?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "time_off_barber_id_fkey"
+            columns: ["barber_id"]
+            isOneToOne: false
+            referencedRelation: "barbers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

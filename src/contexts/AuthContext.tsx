@@ -1,5 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 // Define user roles
 export type UserRole = 'customer' | 'barber' | 'admin';
@@ -20,31 +22,6 @@ export interface RegistrationData {
   password: string;
   role: UserRole;
 }
-
-// Mock users for demonstration
-const MOCK_USERS = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'customer@example.com',
-    role: 'customer' as UserRole,
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John',
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'barber@example.com',
-    role: 'barber' as UserRole,
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Jane',
-  },
-  {
-    id: '3',
-    name: 'Admin User',
-    email: 'admin@example.com',
-    role: 'admin' as UserRole,
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Admin',
-  }
-];
 
 interface AuthContextType {
   user: User | null;
@@ -67,71 +44,168 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [users, setUsers] = useState<User[]>(MOCK_USERS);
+  const { toast } = useToast();
 
-  // Check for saved user on mount
+  // Check for auth state on mount and subscribe to auth changes
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-      setIsAuthenticated(true);
-    }
-    
-    // Also retrieve any registered users from localStorage
-    const savedUsers = localStorage.getItem('users');
-    if (savedUsers) {
-      const parsedUsers = JSON.parse(savedUsers);
-      setUsers([...MOCK_USERS, ...parsedUsers]);
-    }
+    // Get the initial session
+    const checkUser = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+
+      if (session && !error) {
+        // Fetch user profile from profiles table
+        const { data: profile, error: profileError } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        if (profile && !profileError) {
+          const userData: User = {
+            id: profile.id,
+            name: profile.name,
+            email: session.user.email!,
+            role: profile.role as UserRole,
+            avatar: profile.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}`,
+          };
+          setUser(userData);
+          setIsAuthenticated(true);
+        } else {
+          // If we can't get the profile, just use the session data
+          const userData: User = {
+            id: session.user.id,
+            name: session.user.email!.split('@')[0],
+            email: session.user.email!,
+            role: 'customer',
+            avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${session.user.email}`,
+          };
+          setUser(userData);
+          setIsAuthenticated(true);
+        }
+      }
+    };
+
+    checkUser();
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          // Fetch user profile
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+
+          if (profile && !profileError) {
+            const userData: User = {
+              id: profile.id,
+              name: profile.name,
+              email: session.user.email!,
+              role: profile.role as UserRole,
+              avatar: profile.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}`,
+            };
+            setUser(userData);
+            setIsAuthenticated(true);
+          } else {
+            // Fall back to session data
+            const userData: User = {
+              id: session.user.id,
+              name: session.user.email!.split('@')[0],
+              email: session.user.email!,
+              role: 'customer',
+              avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${session.user.email}`,
+            };
+            setUser(userData);
+            setIsAuthenticated(true);
+          }
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          setIsAuthenticated(false);
+        }
+      }
+    );
+
+    // Cleanup subscription
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Mock authentication - in a real app, this would call an API
-    // For demo purposes, accept any password and find user by email
-    const foundUser = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    
-    if (foundUser) {
-      setUser(foundUser);
-      setIsAuthenticated(true);
-      localStorage.setItem('user', JSON.stringify(foundUser));
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        toast({
+          title: 'Login Failed',
+          description: error.message,
+          variant: 'destructive',
+        });
+        return false;
+      }
+
+      // Success is handled by the auth state change listener
       return true;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
     }
-    
-    return false;
   };
 
   const register = async (data: RegistrationData): Promise<boolean> => {
-    // Check if the email already exists
-    const emailExists = users.some(u => u.email.toLowerCase() === data.email.toLowerCase());
-    if (emailExists) {
+    try {
+      // Register with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email: data.email,
+        password: data.password,
+        options: {
+          data: {
+            name: data.name,
+            role: data.role,
+          },
+        },
+      });
+
+      if (authError) {
+        toast({
+          title: 'Registration Failed',
+          description: authError.message,
+          variant: 'destructive',
+        });
+        return false;
+      }
+
+      // We don't need to manually create the profile record since we have a trigger
+      // that creates it when a new user is created in auth.users
+      toast({
+        title: 'Registration Successful',
+        description: 'Your account has been created. Please log in.',
+      });
+      
+      // Log the user out after successful registration so they can log in
+      await logout();
+      return true;
+    } catch (error) {
+      console.error('Registration error:', error);
       return false;
     }
-    
-    // Create a new user
-    const newUser: User = {
-      id: (users.length + 1).toString(),
-      name: data.name,
-      email: data.email,
-      role: data.role,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${data.name}`,
-    };
-    
-    // Update the users array
-    const updatedUsers = [...users, newUser];
-    setUsers(updatedUsers);
-    
-    // Save the updated users to localStorage
-    // In a real app, this would be handled by a backend API
-    const registeredUsers = updatedUsers.filter(u => !MOCK_USERS.some(mu => mu.id === u.id));
-    localStorage.setItem('users', JSON.stringify(registeredUsers));
-    
-    return true;
   };
 
-  const logout = () => {
-    setUser(null);
-    setIsAuthenticated(false);
-    localStorage.removeItem('user');
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+      // The auth state change listener will update the state
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
