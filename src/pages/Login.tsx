@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -17,13 +18,14 @@ interface LocationState {
 }
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, register } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [demoAccountsCreated, setDemoAccountsCreated] = useState(false);
 
   const locationState = location.state as LocationState;
   const from = locationState?.from?.pathname || '/';
@@ -72,6 +74,39 @@ const Login = () => {
     }
   };
 
+  const createDemoAccount = async (role: string) => {
+    // Demo account data
+    const demoData = {
+      name: role.charAt(0).toUpperCase() + role.slice(1) + ' Demo',
+      email: `${role}@example.com`,
+      password: 'password123',
+      role: role
+    };
+
+    try {
+      // Check if account already exists (we'll try to register and handle the error gracefully)
+      const success = await register(demoData);
+      
+      if (success) {
+        toast({
+          title: 'Demo Account Created',
+          description: `Demo ${role} account has been created.`,
+          variant: 'default',
+        });
+        setDemoAccountsCreated(true);
+        return true;
+      }
+      
+      // If we get here, the account might already exist or there was another issue
+      // We'll assume it exists and try to login anyway
+      return true;
+    } catch (error) {
+      console.error('Error creating demo account:', error);
+      // We'll assume the account might already exist and try to login anyway
+      return true;
+    }
+  };
+
   const handleDemoLogin = async (role: string) => {
     setIsLoading(true);
     let demoEmail = '';
@@ -94,6 +129,12 @@ const Login = () => {
     setPassword('password123');
     
     try {
+      // First, try to create the demo account if not already created
+      if (!demoAccountsCreated) {
+        await createDemoAccount(role);
+      }
+      
+      // Then try to login
       const success = await login(demoEmail, 'password123');
       
       if (success) {
@@ -106,14 +147,14 @@ const Login = () => {
       } else {
         toast({
           title: 'Demo Login Failed',
-          description: 'Demo accounts may not be set up yet.',
+          description: 'Please go to the Register page and create this demo account first.',
           variant: 'destructive',
         });
       }
     } catch (error) {
       toast({
         title: 'Login Error',
-        description: 'An error occurred during login.',
+        description: 'Please go to the Register page and create this demo account first.',
         variant: 'destructive',
       });
     } finally {
@@ -283,7 +324,7 @@ const Login = () => {
                 </Link>
               </div>
               <div className="mt-1">
-                For demo purposes, click the "Try Demo Account" button
+                For demo purposes, click the "Try Demo Account" button to automatically create and log in with demo credentials
               </div>
             </div>
           </CardFooter>
