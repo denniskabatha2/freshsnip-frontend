@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth, UserRole } from '../contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -14,6 +15,18 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 }) => {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();
+
+  useEffect(() => {
+    // Check session on mount
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        // Session is invalid - nothing to do, the auth context will handle this
+      }
+    };
+    
+    checkSession();
+  }, []);
 
   if (!isAuthenticated) {
     // Redirect to login page with the return url

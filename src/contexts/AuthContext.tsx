@@ -159,13 +159,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (data: RegistrationData): Promise<boolean> => {
     try {
+      // Split the name into first and last name
+      const nameParts = data.name.split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+
       // Register with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email: data.email,
         password: data.password,
         options: {
           data: {
-            name: data.name,
+            first_name: firstName,
+            last_name: lastName,
             role: data.role,
           },
         },

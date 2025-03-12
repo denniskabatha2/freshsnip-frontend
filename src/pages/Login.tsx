@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -9,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/hooks/use-toast';
 import Navbar from '@/components/Navbar';
 import { User, Shield, Key } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface LocationState {
   from?: {
@@ -28,6 +28,18 @@ const Login = () => {
   const locationState = location.state as LocationState;
   const from = locationState?.from?.pathname || '/';
 
+  // If user is already logged in, redirect them
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        navigate(from, { replace: true });
+      }
+    };
+    
+    checkSession();
+  }, [navigate, from]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -46,6 +58,55 @@ const Login = () => {
         toast({
           title: 'Login Failed',
           description: 'Invalid email or password.',
+          variant: 'destructive',
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Login Error',
+        description: 'An error occurred during login.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDemoLogin = async (role: string) => {
+    setIsLoading(true);
+    let demoEmail = '';
+    
+    switch(role) {
+      case 'customer':
+        demoEmail = 'customer@example.com';
+        break;
+      case 'barber':
+        demoEmail = 'barber@example.com';
+        break;
+      case 'admin':
+        demoEmail = 'admin@example.com';
+        break;
+      default:
+        demoEmail = 'customer@example.com';
+    }
+    
+    setEmail(demoEmail);
+    setPassword('password123');
+    
+    try {
+      const success = await login(demoEmail, 'password123');
+      
+      if (success) {
+        toast({
+          title: 'Demo Login Successful',
+          description: `Logged in as ${role}`,
+          variant: 'default',
+        });
+        navigate(from, { replace: true });
+      } else {
+        toast({
+          title: 'Demo Login Failed',
+          description: 'Demo accounts may not be set up yet.',
           variant: 'destructive',
         });
       }
@@ -116,6 +177,14 @@ const Login = () => {
                     <Button type="submit" disabled={isLoading}>
                       {isLoading ? 'Signing In...' : 'Sign In'}
                     </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => handleDemoLogin('customer')}
+                      disabled={isLoading}
+                    >
+                      Try Demo Account
+                    </Button>
                   </div>
                 </form>
               </TabsContent>
@@ -149,6 +218,14 @@ const Login = () => {
                     </div>
                     <Button type="submit" disabled={isLoading}>
                       {isLoading ? 'Signing In...' : 'Staff Sign In'}
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => handleDemoLogin('barber')}
+                      disabled={isLoading}
+                    >
+                      Try Demo Account
                     </Button>
                   </div>
                 </form>
@@ -184,6 +261,14 @@ const Login = () => {
                     <Button type="submit" disabled={isLoading}>
                       {isLoading ? 'Signing In...' : 'Admin Sign In'}
                     </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => handleDemoLogin('admin')}
+                      disabled={isLoading}
+                    >
+                      Try Demo Account
+                    </Button>
                   </div>
                 </form>
               </TabsContent>
@@ -198,10 +283,7 @@ const Login = () => {
                 </Link>
               </div>
               <div className="mt-1">
-                For demo purposes, use these emails with any password:
-              </div>
-              <div className="mt-1">
-                customer@example.com | barber@example.com | admin@example.com
+                For demo purposes, click the "Try Demo Account" button
               </div>
             </div>
           </CardFooter>
