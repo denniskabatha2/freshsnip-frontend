@@ -1,7 +1,6 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth, UserRole } from '../contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -30,7 +29,6 @@ const Login = () => {
   const locationState = location.state as LocationState;
   const from = locationState?.from?.pathname || '/';
 
-  // If user is already logged in, redirect them
   useEffect(() => {
     const checkSession = async () => {
       const { data } = await supabase.auth.getSession();
@@ -74,8 +72,7 @@ const Login = () => {
     }
   };
 
-  const createDemoAccount = async (role: string) => {
-    // Demo account data
+  const createDemoAccount = async (role: UserRole) => {
     const demoData = {
       name: role.charAt(0).toUpperCase() + role.slice(1) + ' Demo',
       email: `${role}@example.com`,
@@ -84,7 +81,6 @@ const Login = () => {
     };
 
     try {
-      // Check if account already exists (we'll try to register and handle the error gracefully)
       const success = await register(demoData);
       
       if (success) {
@@ -97,17 +93,14 @@ const Login = () => {
         return true;
       }
       
-      // If we get here, the account might already exist or there was another issue
-      // We'll assume it exists and try to login anyway
       return true;
     } catch (error) {
       console.error('Error creating demo account:', error);
-      // We'll assume the account might already exist and try to login anyway
       return true;
     }
   };
 
-  const handleDemoLogin = async (role: string) => {
+  const handleDemoLogin = async (role: UserRole) => {
     setIsLoading(true);
     let demoEmail = '';
     
@@ -129,12 +122,10 @@ const Login = () => {
     setPassword('password123');
     
     try {
-      // First, try to create the demo account if not already created
       if (!demoAccountsCreated) {
         await createDemoAccount(role);
       }
       
-      // Then try to login
       const success = await login(demoEmail, 'password123');
       
       if (success) {
